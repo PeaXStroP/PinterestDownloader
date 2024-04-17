@@ -9,12 +9,9 @@ def get_video(e):
     response = req.content
 
     soup = BeautifulSoup(response, 'html.parser')
-    href_link = soup.find("link", rel="alternate")['href']
     extract_url = soup.find("video", class_="hwa kVc MIw L4E")['src']
     convert_url = extract_url.replace("hls", "720p").replace("m3u8", "mp4")
-
     response = requests.get(convert_url, stream=True)
-
     with open(f'{datetime.now().strftime("%d_%m_%H_%M_%S_") + ".mp4"}', 'wb') as f:
         for chunk in response.iter_content(chunk_size=1024 * 1024):
             if chunk:
